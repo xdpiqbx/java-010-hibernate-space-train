@@ -1,1 +1,1 @@
-# java-006-jdbc-migration-crud-practice
+# java-010-hibernate-space-train
