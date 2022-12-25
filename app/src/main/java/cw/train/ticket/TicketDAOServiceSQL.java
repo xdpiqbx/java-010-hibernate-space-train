@@ -9,14 +9,14 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-public class TicketDAOService {
+public class TicketDAOServiceSQL {
 
     private final PreparedStatement createSt;
     private final PreparedStatement getMaxIdSt;
     private final PreparedStatement getTicketCountToPlanetSt;
     private ExecutorService insertExecutor;
 
-    public TicketDAOService(Connection connection){
+    public TicketDAOServiceSQL(Connection connection){
         try {
             insertExecutor = Executors.newSingleThreadScheduledExecutor();
             createSt = connection.prepareStatement(

@@ -1,10 +1,9 @@
 package cw.train.cli;
 
+import cw.train.passenger.IPassengerDAOService;
 import cw.train.passenger.Passenger;
-import cw.train.passenger.PassengerDAOService;
-import cw.train.ticket.Planet;
-import cw.train.ticket.Ticket;
-import cw.train.ticket.TicketDAOService;
+import cw.train.passenger.PassengerDAOServiceHibernate;
+import cw.train.ticket.*;
 
 import java.sql.SQLException;
 
@@ -16,7 +15,8 @@ public class AddTicketState extends CliState{
     @Override
     public void init() {
         try {
-            PassengerDAOService passengerDAOService = new PassengerDAOService(fsm.getConnectionProvider().createConnection());
+//            IPassengerDAOService passengerDAOService = new PassengerDAOServiceSQL(fsm.getConnectionProvider().createConnection());
+            IPassengerDAOService passengerDAOService = new PassengerDAOServiceHibernate();
             System.out.print("Enter passenger passport: ");
             String passport = fsm.getScanner().nextLine();
             Passenger passenger = passengerDAOService.getByPassport(passport);
@@ -38,14 +38,14 @@ public class AddTicketState extends CliState{
             System.out.println(from + " found. Enter TO planet");
             Planet to = new PlanetChooser(fsm.getScanner()).ask();
 
-            TicketDAOService ticketDAOService = new TicketDAOService(fsm.getConnectionProvider().createConnection());
+//            TicketDAOServiceSQL ticketDAOService = new TicketDAOServiceSQL(fsm.getConnectionProvider().createConnection());
+            ITicketDAOService ticketDAOService = new TicketDAOServiceHibernate();
             Ticket ticket = new Ticket();
             ticket.setPassengerId(passenger.getId());
             ticket.setFrom(from);
             ticket.setTo(to);
             long ticketId = ticketDAOService.create(ticket);
             System.out.println(to + " found. Ticket ordered, ID: " + ticketId);
-
             fsm.setState(new IdleState(fsm));
         } catch (SQLException e) {
             throw new RuntimeException(e);

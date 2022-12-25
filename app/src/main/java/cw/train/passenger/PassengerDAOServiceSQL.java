@@ -5,11 +5,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class PassengerDAOService {
+public class PassengerDAOServiceSQL implements IPassengerDAOService{
     private final PreparedStatement createSt;
     private final PreparedStatement getByPassportSt;
 
-    public PassengerDAOService(Connection connection) throws SQLException {
+    public PassengerDAOServiceSQL(Connection connection) throws SQLException {
         createSt = connection.prepareStatement(
         "INSERT INTO passenger (passport, name) VALUES (?, ?)"
         );
